@@ -5,4 +5,7 @@ description: "CaveCraft's skyblock plugin."
 commands:
   is:
     description: "Brings you to your island."
-    usage: "/is"
+    usage: "Proper usage: /is"
+  isreset:
+    description: "Resets your island."
+    usage: "Proper usage: /isreset"

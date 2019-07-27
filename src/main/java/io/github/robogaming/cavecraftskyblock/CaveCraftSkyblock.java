@@ -23,6 +23,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String name, String[] args) {
         Player player = (Player)sender;
         String uuid = player.getUniqueId().toString();
+        boolean success = false;
 
         switch (name) {
             case "is":
@@ -31,7 +32,10 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     player.teleport(new Location(Bukkit.getWorld(uuid), 0, 130, 0));
                     player.sendMessage(prefix + "You have been sent to your island.");
                 } else {
-                    World island = Bukkit.createWorld(new VoidWorld(uuid));
+                    player.getInventory().clear();
+                    WorldCreator creator = new WorldCreator(uuid);
+                    creator.generator(new VoidGen());
+                    World island = Bukkit.createWorld(creator);
                     island.getBlockAt(new Location(island, 0, 100, 0)).setType(Material.GRASS);
                     island.generateTree(new Location(island, 0, 101, 0), TreeType.TREE);
                     player.sendMessage(prefix + "Your island was created.");
@@ -39,9 +43,23 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     player.teleport(new Location(island, 0, 130, 0));
                     player.sendMessage(prefix + "You have been sent to your island.");
                 }
+                success = true;
+                break;
+            case "isreset":
+                player.getInventory().clear();
+                WorldCreator creator = new WorldCreator(uuid);
+                creator.generator(new VoidGen());
+                World island = Bukkit.createWorld(creator);
+                island.getBlockAt(new Location(island, 0, 100, 0)).setType(Material.GRASS);
+                island.generateTree(new Location(island, 0, 101, 0), TreeType.TREE);
+                player.sendMessage(prefix + "Your island was reset.");
+                player.setVelocity(new Vector(0,0,0));
+                player.teleport(new Location(island, 0, 130, 0));
+                player.sendMessage(prefix + "You have been sent to your island.");
+                success = true;
                 break;
         }
-        return false;
+        return success;
     }
 
     @Override
