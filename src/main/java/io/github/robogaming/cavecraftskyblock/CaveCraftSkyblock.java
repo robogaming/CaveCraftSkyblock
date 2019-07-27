@@ -22,6 +22,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
         if (getConfig().get("file") == null) {
             getServer().getLogger().info("Creating config...");
             getConfig().options().copyDefaults(true);
+            saveConfig();
         }
 
         getServer().getLogger().info("Registering events...");
@@ -46,6 +47,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     WorldCreator creator = new WorldCreator(uuid);
                     creator.generator(new VoidGen());
                     World island = Bukkit.createWorld(creator);
+                    island.setSpawnLocation(0, 130, 0);
                     island.getBlockAt(new Location(island, 0, 100, 0)).setType(Material.GRASS);
                     island.generateTree(new Location(island, 0, 101, 0), TreeType.TREE);
                     player.sendMessage(prefix + "Your island was created.");
@@ -61,6 +63,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                 WorldCreator creator = new WorldCreator(uuid);
                 creator.generator(new VoidGen());
                 World island = Bukkit.createWorld(creator);
+                island.setSpawnLocation(0, 130, 0);
                 island.getBlockAt(new Location(island, 0, 100, 0)).setType(Material.GRASS);
                 island.generateTree(new Location(island, 0, 101, 0), TreeType.TREE);
                 player.sendMessage(prefix + "Your island was reset.");
@@ -76,11 +79,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        try {
-            getConfig().save(new File("./plugins/CaveCraftSkyblock/config.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveConfig();
     }
 
     public static Location translate(Location loc, double x, double y, double z) {

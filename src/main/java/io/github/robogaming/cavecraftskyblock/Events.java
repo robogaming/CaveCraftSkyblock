@@ -53,7 +53,7 @@ public class Events implements Listener {
                 event.setCancelled(true);
                 double money = plugin.getConfig().getDouble(player.getUniqueId() + ".money");
                 plugin.getConfig().set(player.getUniqueId() + ".money", Math.floor(money/2));
-                player.sendMessage(ChatColor.MAGIC.toString() + ChatColor.RED + "[]" + ChatColor.RESET + ChatColor.RED + "You died and lost half of your money.");
+                player.sendMessage("&k" + ChatColor.RED + "F" + ChatColor.RESET + ChatColor.RED + " You died and lost half of your money.");
                 player.setHealth(player.getMaxHealth());
                 player.setFoodLevel(20);
                 player.teleport(player.getWorld().getSpawnLocation());
