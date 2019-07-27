@@ -1,12 +1,13 @@
 package io.github.robogaming.cavecraftskyblock;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class Events implements Listener {
     CaveCraftSkyblock plugin = (CaveCraftSkyblock) Bukkit.getPluginManager().getPlugin("CaveCraftSkyblock");
@@ -18,6 +19,25 @@ public class Events implements Listener {
         if (plugin.getConfig().get(player.getUniqueId() + ".joined") == null) {
             plugin.getConfig().set(player.getUniqueId() + ".money", 0);
             plugin.getConfig().set(player.getUniqueId() + ".joined", true);
+        }
+    }
+
+    @EventHandler
+    void onCrouch(PlayerToggleSneakEvent event) {
+        Player player = event.getPlayer();
+        if (player.getWorld() != Bukkit.getWorld("world")) {
+            for (int x = -3; x < 3; x++) {
+                for (int y = -3; y < 3; y++) {
+                    for (int z = -3; z < 3; z++) {
+                        Block b = player.getWorld().getBlockAt(plugin.translateWhole(player.getLocation(), x, y, z));
+                        if (b.getType() == Material.SAPLING) {
+                            b.setType(Material.AIR);
+                            player.getWorld().generateTree(plugin.translateWhole(player.getLocation(), x, y, z), TreeType.TREE);
+                            player.spawnParticle(Particle.VILLAGER_HAPPY, plugin.translateWhole(player.getLocation(), x, y, z), 30);
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -75,11 +75,11 @@ public final class CaveCraftSkyblock extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    static Location translate(Location loc, double x, double y, double z) {
+    public static Location translate(Location loc, double x, double y, double z) {
         return new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z);
     }
 
-    static Location translateWhole(Location loc, int x, int y, int z) {
+    public static Location translateWhole(Location loc, int x, int y, int z) {
         return new Location(loc.getWorld(), (int)Math.round(loc.getX()) + x, (int)Math.round(loc.getY()) + y, (int)Math.round(loc.getZ()) + z);
     }
 }
