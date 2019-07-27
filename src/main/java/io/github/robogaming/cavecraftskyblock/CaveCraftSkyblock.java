@@ -15,7 +15,12 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        getServer().getLogger().info("Creating config...");
         getConfig().options().copyDefaults(true);
+
+        getServer().getLogger().info("Registering events...");
+        getServer().getPluginManager().registerEvents(new Events(), this);
 
         getServer().getLogger().info("Startup complete!");
     }
