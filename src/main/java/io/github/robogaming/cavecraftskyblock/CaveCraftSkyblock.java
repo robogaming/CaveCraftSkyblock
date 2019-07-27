@@ -9,6 +9,9 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
+import java.io.File;
+import java.io.IOException;
+
 public final class CaveCraftSkyblock extends JavaPlugin {
     String prefix = ChatColor.BLUE + "[" + ChatColor.WHITE + "CaveCraft" + ChatColor.BLUE + "]" + ChatColor.WHITE + ": ";
 
@@ -73,6 +76,11 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        try {
+            getConfig().save(new File("./plugins/CaveCraftSkyblock/config.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Location translate(Location loc, double x, double y, double z) {
