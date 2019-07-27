@@ -46,6 +46,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                 success = true;
                 break;
             case "isreset":
+                getConfig().set(player.getUniqueId() + ".money", 0);
                 player.getInventory().clear();
                 WorldCreator creator = new WorldCreator(uuid);
                 creator.generator(new VoidGen());
