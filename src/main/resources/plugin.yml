@@ -1,0 +1,4 @@
+name: CaveCraftSkyblock
+version: ${project.version}
+main: io.github.robogaming.cavecraftskyblock.CaveCraftSkyblock
+description:
