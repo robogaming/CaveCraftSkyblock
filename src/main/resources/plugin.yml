@@ -1,4 +1,8 @@
 name: CaveCraftSkyblock
 version: ${project.version}
 main: io.github.robogaming.cavecraftskyblock.CaveCraftSkyblock
-description:
+description: "CaveCraft's skyblock plugin."
+commands:
+  is:
+    description: "Brings you to your island."
+    usage: "/is"
