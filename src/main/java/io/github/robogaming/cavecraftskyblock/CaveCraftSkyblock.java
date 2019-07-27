@@ -16,8 +16,10 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
-        getServer().getLogger().info("Creating config...");
-        getConfig().options().copyDefaults(true);
+        if (getConfig().get("file") == null) {
+            getServer().getLogger().info("Creating config...");
+            getConfig().options().copyDefaults(true);
+        }
 
         getServer().getLogger().info("Registering events...");
         getServer().getPluginManager().registerEvents(new Events(), this);
@@ -71,5 +73,13 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    static Location translate(Location loc, double x, double y, double z) {
+        return new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z);
+    }
+
+    static Location translateWhole(Location loc, int x, int y, int z) {
+        return new Location(loc.getWorld(), (int)Math.round(loc.getX()) + x, (int)Math.round(loc.getY()) + y, (int)Math.round(loc.getZ()) + z);
     }
 }
