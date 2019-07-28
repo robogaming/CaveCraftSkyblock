@@ -8,6 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 public class Events implements Listener {
     CaveCraftSkyblock plugin = (CaveCraftSkyblock) Bukkit.getPluginManager().getPlugin("CaveCraftSkyblock");
@@ -20,6 +23,7 @@ public class Events implements Listener {
             plugin.getConfig().set(player.getUniqueId() + ".money", 0);
             plugin.getConfig().set(player.getUniqueId() + ".joined", true);
         }
+        plugin.saveConfig();
     }
 
     @EventHandler
@@ -33,7 +37,7 @@ public class Events implements Listener {
                         if (b.getType() == Material.SAPLING) {
                             b.setType(Material.AIR);
                             player.getWorld().generateTree(plugin.translateWhole(player.getLocation(), x, y, z), TreeType.TREE);
-                            player.spawnParticle(Particle.VILLAGER_HAPPY, plugin.translateWhole(player.getLocation(), x, y, z), 30);
+                            player.playSound(player.getEyeLocation(), Sound.ENTITY_BOBBER_SPLASH, 100, 1);
                         }
                     }
                 }
@@ -53,9 +57,14 @@ public class Events implements Listener {
                 event.setCancelled(true);
                 double money = plugin.getConfig().getDouble(player.getUniqueId() + ".money");
                 plugin.getConfig().set(player.getUniqueId() + ".money", Math.floor(money/2));
-                player.sendMessage("&k" + ChatColor.RED + "F" + ChatColor.RESET + ChatColor.RED + " You died and lost half of your money.");
+                player.sendMessage(ChatColor.RED + "$" + ChatColor.RESET + ChatColor.RED + " You died and lost half of your money.");
                 player.setHealth(player.getMaxHealth());
                 player.setFoodLevel(20);
+                player.setFireTicks(0);
+                for (PotionEffect effect : player.getActivePotionEffects())
+                    player.removePotionEffect(effect.getType());
+                player.setNoDamageTicks(100);
+                player.setVelocity(new Vector(0,0,0));
                 player.teleport(player.getWorld().getSpawnLocation());
             }
         }

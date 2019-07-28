@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/robogaming/cavecraftskyblock/CaveCraftSkyblock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/robogaming/cavecraftskyblock/CaveCraftSkyblock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/robogaming/cavecraftskyblock/Events.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/robogaming/cavecraftskyblock/Events.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

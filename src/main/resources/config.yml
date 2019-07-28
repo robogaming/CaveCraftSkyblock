@@ -1,1 +1,1 @@
-file: true
+fileExists: "true" /*Set to false to make the config reset.*/

@@ -19,11 +19,13 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
-        if (getConfig().get("file") == null) {
+        if (getConfig().getString("fileExists") != "true") {
             getServer().getLogger().info("Creating config...");
             getConfig().options().copyDefaults(true);
             saveConfig();
+            saveDefaultConfig();
         }
+        reloadConfig();
 
         getServer().getLogger().info("Registering events...");
         getServer().getPluginManager().registerEvents(new Events(), this);
@@ -43,6 +45,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     player.teleport(new Location(Bukkit.getWorld(uuid), 0, 130, 0));
                     player.sendMessage(prefix + "You have been sent to your island.");
                 } else {
+                    if (Bukkit.getWorld(uuid) != null) Bukkit.getWorld(uuid).getWorldFolder().delete();
                     player.getInventory().clear();
                     WorldCreator creator = new WorldCreator(uuid);
                     creator.generator(new VoidGen());
@@ -58,6 +61,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                 success = true;
                 break;
             case "isreset":
+                if (Bukkit.getWorld(uuid) != null) Bukkit.getWorld(uuid).getWorldFolder().delete();
                 getConfig().set(player.getUniqueId() + ".money", 0);
                 player.getInventory().clear();
                 WorldCreator creator = new WorldCreator(uuid);
@@ -73,6 +77,8 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                 success = true;
                 break;
         }
+
+        saveConfig();
         return success;
     }
 
