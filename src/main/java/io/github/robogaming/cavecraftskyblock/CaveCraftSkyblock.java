@@ -36,6 +36,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String name, String[] args) {
         Player player = (Player)sender;
         String uuid = player.getUniqueId().toString();
+        getLogger().info("Player " + player.getName() + " with uuid " + uuid + " registered command " + name);
         boolean success = false;
 
         switch (name) {
@@ -45,7 +46,12 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     player.teleport(new Location(Bukkit.getWorld(uuid), 0, 130, 0));
                     player.sendMessage(prefix + "You have been sent to your island.");
                 } else {
-                    if (Bukkit.getWorld(uuid) != null) Bukkit.getWorld(uuid).getWorldFolder().delete();
+                    if (unloadWorld(Bukkit.getWorld(uuid))) {
+                        deleteWorld(Bukkit.getWorld(uuid));
+                    } else {
+                        player.sendMessage(prefix + "World could not be unloaded.");
+                    }
+                    getConfig().set(player.getUniqueId() + ".money", 0);
                     player.getInventory().clear();
                     WorldCreator creator = new WorldCreator(uuid);
                     creator.generator(new VoidGen());
@@ -53,7 +59,7 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                     island.setSpawnLocation(0, 130, 0);
                     island.getBlockAt(new Location(island, 0, 100, 0)).setType(Material.GRASS);
                     island.generateTree(new Location(island, 0, 101, 0), TreeType.TREE);
-                    player.sendMessage(prefix + "Your island was created.");
+                    player.sendMessage(prefix + "Your island was reset.");
                     player.setVelocity(new Vector(0,0,0));
                     player.teleport(new Location(island, 0, 130, 0));
                     player.sendMessage(prefix + "You have been sent to your island.");
@@ -61,7 +67,11 @@ public final class CaveCraftSkyblock extends JavaPlugin {
                 success = true;
                 break;
             case "isreset":
-                if (Bukkit.getWorld(uuid) != null) Bukkit.getWorld(uuid).getWorldFolder().delete();
+                if (unloadWorld(Bukkit.getWorld(uuid))) {
+                    deleteWorld(Bukkit.getWorld(uuid));
+                } else {
+                    player.sendMessage(prefix + "World could not be unloaded.");
+                }
                 getConfig().set(player.getUniqueId() + ".money", 0);
                 player.getInventory().clear();
                 WorldCreator creator = new WorldCreator(uuid);
@@ -94,5 +104,43 @@ public final class CaveCraftSkyblock extends JavaPlugin {
 
     public static Location translateWhole(Location loc, int x, int y, int z) {
         return new Location(loc.getWorld(), (int)Math.round(loc.getX()) + x, (int)Math.round(loc.getY()) + y, (int)Math.round(loc.getZ()) + z);
+    }
+
+    public boolean unloadWorld(World world) {
+        if(world != null) {
+            Bukkit.getServer().unloadWorld(world, true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteWorld(World world) {
+        File path = world.getWorldFolder();
+        if(path.exists()) {
+            File files[] = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    removeDir(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
+    }
+
+    public boolean removeDir(File path) {
+        if(path.exists()) {
+            File files[] = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    removeDir(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
     }
 }
